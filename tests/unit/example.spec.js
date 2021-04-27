@@ -1,34 +1,28 @@
-import { nextTick, ref } from '@vue/runtime-core'
+import { nextTick } from '@vue/runtime-core'
 import { mount } from '@vue/test-utils'
+import App from './App.vue'
+import { createStore } from 'vuex'
 
-const App = {
-  setup() {
-    const count = ref(0)
-    const increment = () => {
-      count.value += 1
+const createVuexStore = () => {
+  return createStore({
+    state() {
+      return {
+        count: 0
+      }
+    },
+    mutations: {
+      increment(state) {
+        state.count += 1
+      }
     }
-    return {
-      count,
-      increment
-    }
-  },
-
-  template: `
-    <button @click="increment" />
-    <div v-if="count % 2 === 0">
-      Count: {{ count }}. Count is even.
-    </div>
-
-    <div v-if="count % 2 !== 0">
-      Count: {{ count }}. Count is odd.
-    </div>
-  `
+  })
 }
 
-function factory({ data } = { data: {} }) {
+function factory() {
+  const store = createVuexStore()
   return mount(App, {
-    data() {
-      return data
+    global: {
+      plugins: [store]
     }
   })
 }
