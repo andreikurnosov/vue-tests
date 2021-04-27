@@ -6,17 +6,17 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const store = useStore()
+    const store = inject('store')
     const count = computed(() => store.state.count)
     const increment = () => {
       store.commit('increment')
     }
-    
+
     return {
       count,
       increment

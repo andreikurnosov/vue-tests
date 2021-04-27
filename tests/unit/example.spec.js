@@ -1,4 +1,4 @@
-import { nextTick } from '@vue/runtime-core'
+import { nextTick, reactive, ref } from '@vue/runtime-core'
 import { mount } from '@vue/test-utils'
 import App from './App.vue'
 import { createStore } from 'vuex'
@@ -19,10 +19,19 @@ const createVuexStore = () => {
 }
 
 function factory() {
-  const store = createVuexStore()
+  const state = reactive({
+    count: 0
+  })
   return mount(App, {
     global: {
-      plugins: [store]
+      provide: {
+        store: {
+          state,
+          commit: () => {
+            state.count += 1
+          }
+        }
+      }
     }
   })
 }
