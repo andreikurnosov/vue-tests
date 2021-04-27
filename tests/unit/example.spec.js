@@ -19,16 +19,14 @@ const createVuexStore = () => {
 }
 
 function factory() {
-  const state = reactive({
-    count: 0
-  })
+  const store = createVuexStore()
   return mount(App, {
     global: {
-      provide: {
-        store: {
-          state,
-          commit: () => {
-            state.count += 1
+      plugins: [store],
+      mocks: {
+        $route: {
+          params: {
+            postId: '1'
           }
         }
       }
@@ -52,5 +50,11 @@ describe('App', () => {
     await wrapper.find('button').trigger('click')
 
     expect(wrapper.html()).toContain('Count: 1. Count is odd.')
+  })
+
+  it('render count when odd', async () => {
+    const wrapper = factory()
+
+    expect(wrapper.html()).toContain('PostID: 1')
   })
 })
