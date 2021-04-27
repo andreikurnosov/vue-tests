@@ -52,10 +52,8 @@ describe('App', () => {
     const wrapper = factory()
 
     
-    wrapper.find('button').trigger('click')
+    await wrapper.find('button').trigger('click')
     
-    await nextTick()
-
     expect(wrapper.html()).toContain('Count: 1. Count is odd.')
   })
 })
